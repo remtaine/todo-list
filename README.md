@@ -1,2 +1,2 @@
-# my-webdev-boilerplate
-my personal webdev boilerplate
+# todo-list
+To-do List for The Odin Project
