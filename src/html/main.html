@@ -14,24 +14,26 @@
     <meta property="og:site_name" content="XXXXX">
     <meta name="twitter:image:alt" content="XXXXX made using HTML, CSS, and Javascript">
 
-    <link rel="stylesheet" href="styles/normalize.css" />
-    <link rel="stylesheet" href="styles/style.css" />
-    <link rel="shortcut icon" type="image/jpg" href="images/favicon.png"/>
-    <script src="javascript/main.js" defer></script>
-
     <!-- svg icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.12.0/devicon.min.css">
     <script src="https://kit.fontawesome.com/d8f0c855f0.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <nav>
-        <!-- <%= require('html-loader!./layout/nav.html').default %> -->
-    </nav>
-
     <main>
+        <%= require('html-loader!./layout/header.html').default %>
+        <%= require('html-loader!./layout/nav.html').default %>
+        <section id="list-current">
+            <h2>Main</h2>
+            <ul>
+                <li><input type="checkbox" /> I've been trying</li>
+                <li><input type="checkbox" /> To make you love me</li>
+                <li><input type="checkbox" /> But everything I try</li>
+                <li><input type="checkbox" /> Just takes you further from me</li>
+            </ul>
+        </section>
     </main>
     
-    <footer>
-    </footer>
+    <%= require('html-loader!./layout/footer.html').default %>
+
 </body>
 </html>

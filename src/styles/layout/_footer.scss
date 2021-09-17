@@ -1,0 +1,19 @@
+@import '../utils/utilities';
+@import '../utils/variables';
+
+footer {
+    @include flex-center();
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: transparent;
+    margin-bottom: 10px;
+    
+    
+    a {
+        margin-left: 4px;
+        color: $color3;
+    }
+}
+

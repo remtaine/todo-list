@@ -1,0 +1,31 @@
+@import '../utils/utilities';
+@import '../utils/variables';
+
+nav {
+    background-color: $color1;
+    border-bottom-left-radius: 20px;
+
+
+    ul {
+        // list-style-type: none;
+        padding: 10px;
+        padding-right: 0;
+        margin-left: 1rem;
+        margin-top: 1rem;
+    }
+
+    li {
+        transition: margin 0.3s ease-in-out;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        &.active {
+            margin-left: 20px;
+            background-color: darken($color1, 10%);
+        }
+    }
+    button {
+        padding: 10px 50px 10px 0.5rem;
+        border-color: transparent;
+        background-color: transparent;
+    }
+}
