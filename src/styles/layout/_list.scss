@@ -12,7 +12,10 @@
     li {
         padding: 10px 0;
         margin: 5px 0;
+        width: 100%;
+    }
 
+    .list-text {
         &.done {
             text-decoration: line-through;
             color: lighten($color4, 50%);
@@ -23,9 +26,34 @@
         }
     }
 
-    .fas.fa-plus, #list-add-text  {
+    button {
         // font-size: 16px;
-        color: #767682;
+        padding: 10px;
+        width: 100%;
+        text-align: left;
+        // border-radius: 10px;
+        border-style: none;
+        // border-color: rgba(darken($color1, 10%), 0.5);
+        background-color: transparent;
+        * {
+            color: #767682;
+        }
+    }
+
+    .list-edit {
+        font-size: 1rem;
+        color: $color4;
+        border-color: transparent;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        input[type="text"] {
+            min-width: 0;
+        }
+        * {
+            margin-right: 5px;
+        }
+
+        box-shadow: 5px 0 5px rgba($color4, 0.3), -5px -0 5px rgba($color4, 0.3);
     }
 }
 
@@ -33,4 +61,15 @@
     font-style: italic;
     color: lighten($color4, 30%);
     margin: 15px 0;
+}
+
+@media (max-width: 768px) {
+    #list-current.list-edit {
+        grid-template-columns: auto 1fr;
+        grid-template-rows: 1fr 1fr;
+        // grid-row-gap: 5px;
+    }
+    input[type="date"] {
+        grid-column: 1 / -1;
+    }
 }
