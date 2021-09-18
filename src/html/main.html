@@ -22,15 +22,8 @@
     <main>
         <%= require('html-loader!./layout/header.html').default %>
         <%= require('html-loader!./layout/nav.html').default %>
-        <section id="list-current">
-            <h2>Main</h2>
-            <ul>
-                <li><input type="checkbox" /> I've been trying</li>
-                <li><input type="checkbox" /> To make you love me</li>
-                <li><input type="checkbox" /> But everything I try</li>
-                <li><input type="checkbox" /> Just takes you further from me</li>
-            </ul>
-        </section>
+        <%= require('html-loader!./layout/list.html').default %>
+        
     </main>
     
     <%= require('html-loader!./layout/footer.html').default %>
