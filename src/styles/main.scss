@@ -3,6 +3,7 @@
 @import 'layout/footer';
 @import 'layout/header';
 @import 'layout/nav';
+@import 'layout/list';
 @import 'utils/utilities';
 @import 'utils/variables';
 
@@ -32,23 +33,9 @@ main {
     width: 80%;
     border-radius: 20px;
     display: grid;
-    grid-template-columns: 10rem auto;
+    grid-template-columns: 10rem 1fr;
     grid-template-rows: 10% auto;
-}
-
-#list-current {
-    h2 {
-        margin: 15px;
-    }
-
-    ul {
-        list-style-type: none;
-    }
-
-    li {
-        margin: 10px;
-        margin-left: 15px;
-    }
+    box-shadow: rgba($color4, 0.35) 0px 5px 15px;
 }
 
 @media (max-width: 480px) {

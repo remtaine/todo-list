@@ -4,28 +4,39 @@
 nav {
     background-color: $color1;
     border-bottom-left-radius: 20px;
-
+    // overflow-y: scroll;
 
     ul {
-        // list-style-type: none;
+        list-style-type: none;
         padding: 10px;
         padding-right: 0;
-        margin-left: 1rem;
+        // margin-left: 1rem;
         margin-top: 1rem;
+        // margin-right: 2rem;
     }
 
     li {
         transition: margin 0.3s ease-in-out;
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
+        padding: 5px 0;
+        // padding-right: 10px;
+
+        width: 100%;
         &.active {
-            margin-left: 20px;
+            // margin-left: 20px;
             background-color: darken($color1, 10%);
+            * {
+                color: lighten($color1, 10%);
+                text-shadow: 1px 1px 1px rgba($color4, 0.3);
+            }
         }
     }
     button {
-        padding: 10px 50px 10px 0.5rem;
+        width: 100%;
+        padding: 10px 0;
         border-color: transparent;
         background-color: transparent;
+        text-overflow: ellipsis;
     }
 }
