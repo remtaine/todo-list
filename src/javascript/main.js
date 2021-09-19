@@ -1,28 +1,15 @@
 import '../styles/main.scss';
 import setupNavHeaders from './layout/nav.js';
-import {todoListItem, todoList} from './component/list.js';
+import {setupList, todoListItem, todoList, setupStrikethroughText} from './component/list.js';
+import {createInitSession} from './component/save.js';
 
-const checkboxes = document.getElementsByTagName('input');
-
-const strikethroughText = function(box) {
-    if (box.checked) {
-        box.parentElement.classList.add('done');
-    }
-    else {
-        box.parentElement.classList.remove('done');
-    }
-};
-
-const setupStrikethroughText = function() {
-    for (let i = 0; i < checkboxes.length; i++) {
-        strikethroughText(checkboxes[i]);
-    
-        checkboxes[i].addEventListener('change', function() {
-            strikethroughText(checkboxes[i]);
-        });
-    }
-}
 
 //main starts here
+createInitSession();
+
+const headers = JSON.parse(window.localStorage.getItem('todoListHeaders'));
+// console.log(JSON.parse(window.localStorage.getItem('todoList'))[headers[0]]);
+
+setupList(headers[0]);
 setupStrikethroughText();
 setupNavHeaders();
