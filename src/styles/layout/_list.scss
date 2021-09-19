@@ -16,6 +16,12 @@
     }
 
     .list-text {
+        display: flex;
+        justify-content: flex-start;
+        * {
+            margin-right: 10px;
+        }
+
         &.done * {
             text-decoration: line-through;
             color: lighten($color4, 50%);
@@ -23,6 +29,11 @@
 
         &:hover {
             box-shadow: 5px 0 5px rgba($color4, 0.3), -5px -0 5px rgba($color4, 0.3);
+        }
+
+        .deadline {
+            margin-left: auto;
+            // margin-right: 0;
         }
     }
 
@@ -87,6 +98,9 @@
     button {
         grid-row: 1 / 3;
         grid-column: 3 / 5;
+    }
 
+    .deadline {
+        display: none;
     }
 }
