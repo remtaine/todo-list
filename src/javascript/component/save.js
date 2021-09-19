@@ -1,5 +1,5 @@
 const createInitSession = function() {
-    // window.localStorage.clear();
+    window.localStorage.clear();
     if (window.localStorage.getItem("todoListHeaders") === null) {
         console.log("Initializing first session");
         const todoListHeaders = [
@@ -24,22 +24,22 @@ const createInitSession = function() {
                 {
                     checked: false,
                     content: "This is the story of a champion",
-                    deadline: "none"
+                    deadline: "2021-09-24"
                 },
                 {
                     checked: true,
                     content: "Runners on your mark and they pop the guns",
-                    deadline: "none"
+                    deadline: "2021-09-25"
                 },
                 {
                     checked: false,
                     content: "Stand up, stand up, here he comes",
-                    deadline: "none"
+                    deadline: "2021-09-26"
                 },
                 {
                     checked: false,
                     content: "Tell me, what it takes to be number one",
-                    deadline: "none"
+                    deadline: "2021-09-27"
                 }
             ]
         };
