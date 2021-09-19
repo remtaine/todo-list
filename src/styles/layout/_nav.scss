@@ -25,7 +25,7 @@ nav {
         width: 100%;
         &.active {
             // margin-left: 20px;
-            background-color: darken($color1, 10%);
+            background-color: darken($color1, 40%);
             * {
                 color: lighten($color1, 10%);
                 text-shadow: 1px 1px 1px rgba($color4, 0.3);
@@ -38,5 +38,14 @@ nav {
         border-color: transparent;
         background-color: transparent;
         text-overflow: ellipsis;
+        // display: flex;
+        // justify-content: center;
+        // flex-wrap: wrap;
     }
 }
+
+// @media (max-width: 768px) {
+//     nav i {
+//         display: none;
+//     }
+// }
