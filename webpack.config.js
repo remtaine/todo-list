@@ -14,7 +14,7 @@ module.exports = {
             title: "To-Do List",
             template: './src/html/main.html',
             filename: 'index.html',
-            favicon: './src/images/favicon.png',
+            favicon: './src/images/favicon.ico',
             chunks: ['main'] //, 'header', 'footer', 'nav']
         })
     ],
