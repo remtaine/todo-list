@@ -23,6 +23,7 @@ html, body {
 }
 
 body {
+    background-color: $color4;
     background-image: url('../images/bg.jpg');
     @include flex-center();
 }
@@ -42,6 +43,7 @@ main {
     main {
         height: 90%;
         width: 95%;
+        grid-template-columns: 30% 1fr;
         // border-radius: 0;
     }
 }
