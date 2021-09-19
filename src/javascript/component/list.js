@@ -10,7 +10,7 @@ const todoList = function(title, description, items) {
     return {title, description, items};
 }
 
-const todoListItem = function(data = {title: "", description: "", items: []}) {
+const todoListItem = function(data) {
 
     const render = function() {
         const item = document.createElement('li');
@@ -21,11 +21,14 @@ const todoListItem = function(data = {title: "", description: "", items: []}) {
         checkbox.checked = data.checked;
         const content = document.createElement('span');
         content.innerHTML = " " + data.content;
-        // const deadline = document.createElement('span');
-        // deadline.innerHTML = (data.items[i].deadline === "none") ? "no deadline" : data[i].deadline;
+        
+        const deadline = document.createElement('span');
+        deadline.classList.add('deadline');
+        deadline.innerHTML = (data.deadline === "none") ? "" : data[i].deadline;
     
         item.appendChild(checkbox);
         item.appendChild(content);
+        item.appendChild(deadline);
         return item;
     };
     
