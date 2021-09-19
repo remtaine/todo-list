@@ -47,7 +47,7 @@
         // border-color: rgba(darken($color1, 10%), 0.5);
         background-color: transparent;
         * {
-            color: #767682;
+            color: #575761;
         }
     }
 
@@ -102,5 +102,13 @@
 
     .deadline {
         display: none;
+        // margin-right: auto;
+        // min-width: 0;
     }
+
+    .list-text {
+        // flex-wrap: wrap;
+        // flex: 1 0 45%;
+    }
+
 }
