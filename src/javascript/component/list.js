@@ -32,8 +32,12 @@ const todoListItem = function(data) {
         item.appendChild(checkbox);
         item.appendChild(content);
         item.appendChild(deadline);
-        strikethroughText(checkbox);
 
+        strikethroughText(checkbox);
+        checkbox.addEventListener('change', function() {
+            strikethroughText(checkbox);
+        });
+        
         return item;
     };
     
