@@ -1,24 +1,27 @@
+import {setupList, listItem, listHeader, setupStrikethroughText} from './list.js';
+import {setStorage, getStorage} from './utils.js';
+
 const createInitSession = function() {
     window.localStorage.clear();
-    if (window.localStorage.getItem("todoListHeaders") === null) {
-        console.log("Initializing first session");
-        const todoListHeaders = [
-            'main',
-            'social',
-            'gym',
-            'groceries',
-            'finance'
-        ];
+    console.log('Initializing...')
+    if (window.localStorage.getItem("listHeaders") === null) {
+        setStorage('listHeaders', []);
+        console.log("Creating first session data");
 
-        const todoList = {
-            'main': {},
-            'social': {},
-            'gym': {},
-            'groceries': {},
-            'finance': {}
-        };
+        listHeader('main').create();
+        listHeader('social').create();
+        listHeader('gym').create();
+        listHeader('groceries').create();
+        listHeader('finance').create();
 
-        todoList['main'] = {
+        // const listHeaders = [
+        //     'main',
+        //     'social',
+        //     'gym',
+        //     'groceries',
+        //     'finance'
+        // ];
+        const mainItemList = {
             description: "Did you realize that you're a champion in their eyes?",
             items: [
                 {
@@ -44,11 +47,10 @@ const createInitSession = function() {
             ]
         };
 
-        window.localStorage.setItem('todoListHeaders', JSON.stringify(todoListHeaders));
-        window.localStorage.setItem('todoList', JSON.stringify(todoList));
+        window.localStorage.setItem('main', JSON.stringify(mainItemList));
     }
     else {
-        console.log("Remembering past session");
+        console.log("Retrieving past session data");
     }
 };
 
