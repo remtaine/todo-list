@@ -8,26 +8,51 @@ const listAddButton = document.getElementById('list-add');
 
 let isEditing = false;
 
-const listHeader = function(title) {
+const listHeader = function(header) {
+
+    const getHeader = function() {
+        return header;
+    }
+
     const create = function() {
         let currentHeaders = getStorage('listHeaders');
-        if (!currentHeaders.includes(title)) {
-            currentHeaders.push(title);
+        if (!currentHeaders.includes(header)) {
+            currentHeaders.push(header);
             setStorage('listHeaders', currentHeaders);
         }
     };
 
+    const render = function() {
+        const description = getStorage(header + '-description');
+        const items = getStorage(header + '-items');
+        
+        while (listItems.childElementCount > 1) {
+            listItems.removeChild(listItems.firstChild);
+        }
+    
+        //add the nodes for each
+        listTitle.innerHTML = header;
+        listDescription.innerHTML = description;
+        for (let i = 0; i < items.length; i++) {
+            const item = listItem(items[i]).render();
+            listItems.appendChild(item);
+        }
+        listItems.appendChild(listAddButton);
+    };
+
     const remove = function() {
         let currentHeaders = getStorage('listHeaders');
-        if (currentHeaders.includes(title)) {
-            currentHeaders.splice(currentHeaders.indexOf(title), 1)
+        if (currentHeaders.includes(header)) {
+            currentHeaders.splice(currentHeaders.indexOf(header), 1)
             setStorage('listHeaders', currentHeaders);
         }
     }
-    return {create, remove};
+    
+    return {getHeader, create, render, remove};
 }
 
 const listItem = function(data) {
+    //data contains isChecked, content, and deadline
     const create = function() {
         return render();
         // save();
@@ -82,23 +107,7 @@ const setupStrikethroughText = function() {
     }
 }
 
-const setupList = function(header) {
-    const data = JSON.parse(window.localStorage.getItem(header));
 
-    //clear everything!
-    while (listItems.childElementCount > 1) {
-        listItems.removeChild(listItems.firstChild);
-    }
-
-    //add the nodes for each
-    listTitle.innerHTML = header;
-    listDescription.innerHTML = data.description;
-    for (let i = 0; i < data.items.length; i++) {
-        const item = listItem(data.items[i]).render();
-        listItems.appendChild(item);
-    }
-    listItems.appendChild(listAddButton);
-}
 
 const renderEdit = function(c = false, t = '', d = '') {
     const item = document.createElement('li');
@@ -148,4 +157,4 @@ listAddButton.addEventListener('click', function() {
     }
 });
 
-export {listHeader, listItem, setupStrikethroughText, setupList};
+export {listHeader, listItem, setupStrikethroughText};
