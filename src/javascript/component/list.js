@@ -1,3 +1,6 @@
+import {setStorage, getStorage} from './utils.js';
+
+
 const listTitle = document.getElementById('list-title');
 const listDescription = document.getElementById('list-description');
 const listItems = document.getElementById('list-items');
@@ -5,12 +8,26 @@ const listAddButton = document.getElementById('list-add');
 
 let isEditing = false;
 
-const todoList = function(title, description, items) {
-    console.log("summertime Chi")
-    return {title, description, items};
+const listHeader = function(title) {
+    const create = function() {
+        let currentHeaders = getStorage('listHeaders');
+        if (!currentHeaders.includes(title)) {
+            currentHeaders.push(title);
+            setStorage('listHeaders', currentHeaders);
+        }
+    };
+
+    const remove = function() {
+        let currentHeaders = getStorage('listHeaders');
+        if (currentHeaders.includes(title)) {
+            currentHeaders.splice(currentHeaders.indexOf(title), 1)
+            setStorage('listHeaders', currentHeaders);
+        }
+    }
+    return {create, remove};
 }
 
-const todoListItem = function(data) {
+const listItem = function(data) {
     const create = function() {
         return render();
         // save();
@@ -66,9 +83,9 @@ const setupStrikethroughText = function() {
 }
 
 const setupList = function(header) {
-    const data = JSON.parse(window.localStorage.getItem('todoList'))[header];
+    const data = JSON.parse(window.localStorage.getItem(header));
 
-    //clear all child nodes of each
+    //clear everything!
     while (listItems.childElementCount > 1) {
         listItems.removeChild(listItems.firstChild);
     }
@@ -77,22 +94,13 @@ const setupList = function(header) {
     listTitle.innerHTML = header;
     listDescription.innerHTML = data.description;
     for (let i = 0; i < data.items.length; i++) {
-        // <li class="list-text"><input type="checkbox" /> This is the story of a champion</li>
-        const item = todoListItem(data.items[i]).render();
-        // listItems.insertBefore(item, listItems.firstChild);
+        const item = listItem(data.items[i]).render();
         listItems.appendChild(item);
     }
     listItems.appendChild(listAddButton);
-
-
-    // <li class="add"><button><i class="fas fa-plus fa-xs"></i> <span id="list-add-text">add item</span></button></li>
-    // listItems.appendChild();
 }
 
 const renderEdit = function(c = false, t = '', d = '') {
-    // <li class="list-edit"><input type="checkbox" /><input type="text"/><input type="date"/></li>
-
-
     const item = document.createElement('li');
     item.classList.add('list-edit');
 
@@ -115,7 +123,7 @@ const renderEdit = function(c = false, t = '', d = '') {
 
     button.addEventListener('click', function() {
         const newData = {checked: checkbox.checked, content: text.value, deadline: date.value};
-        const newRender = todoListItem(newData).create()
+        const newRender = listItem(newData).create()
         listItems.appendChild(newRender);
         listItems.appendChild(listAddButton);
         isEditing = false;
@@ -140,4 +148,4 @@ listAddButton.addEventListener('click', function() {
     }
 });
 
-export {todoList, todoListItem, setupStrikethroughText, setupList};
+export {listHeader, listItem, setupStrikethroughText, setupList};
