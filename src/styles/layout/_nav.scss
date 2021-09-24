@@ -44,8 +44,8 @@ nav {
     }
 }
 
-// @media (max-width: 768px) {
-//     nav i {
-//         display: none;
-//     }
-// }
+@media (max-width: $breakpoint1) {
+    nav {
+        display: none;
+    }
+}
