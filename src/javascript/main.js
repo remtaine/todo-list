@@ -15,5 +15,4 @@ const headers = getStorage('listHeaders');
 activeHeader = listHeader(headers[0]);
 activeHeader.renderList();
 
-// setupStrikethroughText();
 setupNavHeaders();
