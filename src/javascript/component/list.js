@@ -5,7 +5,9 @@ const currentListTitle = document.getElementById('list-title');
 let currentHeader = currentListTitle.innerHTML;
 const currentListDescription = document.getElementById('list-description');
 const currentListItems = document.getElementById('list-items');
+const navList = document.getElementById('nav-list');
 const listAddButton = document.getElementById('list-add');
+let activeHeader = null;
 
 let isEditing = false;
 
@@ -28,11 +30,45 @@ const listHeader = function(header) {
         console.log(header);
     }
 
+    const renderNav = function() {
+        // <li class="active"><button class="nav-button">Main</button></li>
+        // <li><button class="nav-button">Social</button></li>
+        // <li><button class="nav-button">Gym</button></li>
+        // <li><button class="nav-button">Groceries</button></li>
+        // <li><button class="nav-button">Finance</button></li>
+        // <li><button><i class="fas fa-plus"></i></button></li>
+
+        const navHeader = document.createElement('li');
+        if (header === getStorage('activeHeader')) {
+            navHeader.classList.add('active');
+            activeHeader = navHeader;
+        }
+        const navButton = document.createElement('button');
+        navButton.classList.add('nav-button');
+        navButton.innerHTML = header;
+
+        navButton.addEventListener('click', function() {
+            console.log('re');
+            if (navButton.parentElement !== activeHeader) {
+                activeHeader.classList.remove('active');
+                navButton.parentElement.classList.add('active');
+                // activeButton = navButtons[i];
+                setStorage('activeHeader', navButton.parentElement);
+                activeHeader = navButton.parentElement;
+                renderList();
+            }
+        });
+
+        navHeader.appendChild(navButton);
+        // navList.insertBefore(navheader, navList.lastChild);
+        navList.appendChild(navHeader);
+    }
     const renderList = function() {
+        console.log("rendering list of " + header);
         const description = listDescription(header, getStorage(header + '-description'));
         const items = getStorage(header + '-items');
         
-        //clear shiz
+        //clear items
         while (currentListItems.firstChild) {
             renderRemove(currentListItems.firstChild);
         }
@@ -41,6 +77,7 @@ const listHeader = function(header) {
         render();
         description.render();
 
+        //add items
         for (let i = 0; i < items.length; i++) {
             const item = listItem(header, items[i]).render();
             currentListItems.appendChild(item);
@@ -56,7 +93,7 @@ const listHeader = function(header) {
         }
     }
     
-    return {get, create, renderList, remove};
+    return {get, create, renderList, renderNav, remove};
 }
 
 const listDescription = function(header, description) {
@@ -195,9 +232,10 @@ const renderEdit = function(obj = {content: '', deadline: ''}) {
         currentListItems.removeChild(item)
     });
 
-    // item.addEventListener('blur', function(event) {
-    //     console.log(document.activeElement);
-    // });
+    buttonDelete.addEventListener('click', function() {
+        isEditing = false;
+        renderRemove(item);
+    });
     
     return item;
 };
