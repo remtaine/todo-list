@@ -1,6 +1,6 @@
 import '../styles/main.scss';
 import setupNavHeaders from './layout/nav.js';
-import {listItem, listHeader, setupStrikethroughText} from './component/list.js';
+import {listItem, listHeader} from './component/list.js';
 import {createInitSession} from './component/save.js';
 import {setStorage, getStorage} from './component/utils.js';
 
@@ -13,7 +13,6 @@ createInitSession();
 const headers = getStorage('listHeaders');
 
 activeHeader = listHeader(headers[0]);
-activeHeader.render();
+activeHeader.renderList();
 
-setupStrikethroughText();
 setupNavHeaders();

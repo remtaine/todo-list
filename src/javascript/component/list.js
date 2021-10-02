@@ -1,16 +1,18 @@
 import {setStorage, getStorage} from './utils.js';
 
 
-const listTitle = document.getElementById('list-title');
-const listDescription = document.getElementById('list-description');
-const listItems = document.getElementById('list-items');
+const currentListTitle = document.getElementById('list-title');
+let currentHeader = currentListTitle.innerHTML;
+const currentListDescription = document.getElementById('list-description');
+const currentListItems = document.getElementById('list-items');
+const navList = document.getElementById('nav-list');
 const listAddButton = document.getElementById('list-add');
+let activeHeader = null;
 
 let isEditing = false;
 
 const listHeader = function(header) {
-
-    const getHeader = function() {
+    const get = function() {
         return header;
     }
 
@@ -21,23 +23,66 @@ const listHeader = function(header) {
             setStorage('listHeaders', currentHeaders);
         }
     };
-
+    
     const render = function() {
-        const description = getStorage(header + '-description');
+        currentListTitle.innerHTML = header;
+        currentHeader = header;
+        console.log(header);
+    }
+
+    const renderNav = function() {
+        // <li class="active"><button class="nav-button">Main</button></li>
+        // <li><button class="nav-button">Social</button></li>
+        // <li><button class="nav-button">Gym</button></li>
+        // <li><button class="nav-button">Groceries</button></li>
+        // <li><button class="nav-button">Finance</button></li>
+        // <li><button><i class="fas fa-plus"></i></button></li>
+
+        const navHeader = document.createElement('li');
+        if (header === getStorage('activeHeader')) {
+            navHeader.classList.add('active');
+            activeHeader = navHeader;
+        }
+        const navButton = document.createElement('button');
+        navButton.classList.add('nav-button');
+        navButton.innerHTML = header;
+
+        navButton.addEventListener('click', function() {
+            console.log('re');
+            if (navButton.parentElement !== activeHeader) {
+                activeHeader.classList.remove('active');
+                navButton.parentElement.classList.add('active');
+                // activeButton = navButtons[i];
+                setStorage('activeHeader', navButton.parentElement);
+                activeHeader = navButton.parentElement;
+                renderList();
+            }
+        });
+
+        navHeader.appendChild(navButton);
+        // navList.insertBefore(navheader, navList.lastChild);
+        navList.appendChild(navHeader);
+    }
+    const renderList = function() {
+        console.log("rendering list of " + header);
+        const description = listDescription(header, getStorage(header + '-description'));
         const items = getStorage(header + '-items');
         
-        while (listItems.childElementCount > 1) {
-            listItems.removeChild(listItems.firstChild);
+        //clear items
+        while (currentListItems.firstChild) {
+            renderRemove(currentListItems.firstChild);
         }
     
         //add the nodes for each
-        listTitle.innerHTML = header;
-        listDescription.innerHTML = description;
+        render();
+        description.render();
+
+        //add items
         for (let i = 0; i < items.length; i++) {
-            const item = listItem(items[i]).render();
-            listItems.appendChild(item);
+            const item = listItem(header, items[i]).render();
+            currentListItems.appendChild(item);
         }
-        listItems.appendChild(listAddButton);
+        currentListItems.appendChild(listAddButton);
     };
 
     const remove = function() {
@@ -48,15 +93,43 @@ const listHeader = function(header) {
         }
     }
     
-    return {getHeader, create, render, remove};
+    return {get, create, renderList, renderNav, remove};
 }
 
-const listItem = function(data) {
-    //data contains isChecked, content, and deadline
-    const create = function() {
-        return render();
-        // save();
+const listDescription = function(header, description) {
+    const get = function() {
+        return description;
     }
+    
+    const create = function() {
+        setStorage(header + '-description', description);
+    }
+
+    const render = function() {
+        currentListDescription.innerHTML = description;
+    }
+
+    return {get, create, render};
+};
+
+
+
+const listItem = function(header, data) {
+    //data contains isChecked, content, and deadline
+    const get = function() {
+        return data;
+    }
+
+    const create = function() {
+        if (getStorage(header + "-items") === null) {
+            setStorage(header + "-items", []);
+        }
+        
+        let items = getStorage(header + '-items');
+        items.push(data);
+        setStorage(header + '-items', items);
+    }
+
     const render = function() {
         const item = document.createElement('li');
         item.classList.add('list-text');
@@ -71,85 +144,112 @@ const listItem = function(data) {
         deadline.classList.add('deadline');
         deadline.innerHTML = (data.deadline !== "none") ? data.deadline: '';
     
+        const buttonDelete = document.createElement('button');
+        buttonDelete.classList.add('buttonDelete');
+        buttonDelete.innerHTML = '<i class="fas fa-trash"></i>';
+
         item.appendChild(checkbox);
         item.appendChild(content);
         item.appendChild(deadline);
+        item.appendChild(buttonDelete);
 
         strikethroughText(checkbox);
         checkbox.addEventListener('change', function() {
             strikethroughText(checkbox);
         });
         
+        buttonDelete.addEventListener('click', function() {
+            const index = console.log(Array.prototype.indexOf.call(item.parentElement.children, item));
+            renderRemove(item);
+            remove(index);
+        });
+
         return item;
     };
     
-    return {render, data, create};
-}
+    const remove = function(index) {
+        let items = getStorage(header + "-items");
+        if (items === null) {
+            return;
+        }
+        
+        items.splice(index, 1);
 
-const strikethroughText = function(box) {
-    if (box.checked) {
-        box.parentElement.classList.add('done');
-    }
-    else {
-        box.parentElement.classList.remove('done');
-    }
-};
+        setStorage(header + '-items', items);
 
-const setupStrikethroughText = function() {
-    const checkboxes = document.getElementsByTagName('input');
+    };
 
-    for (let i = 0; i < checkboxes.length; i++) {
-        strikethroughText(checkboxes[i]);
+    const strikethroughText = function(box) {
+        if (box.checked) {
+            box.parentElement.classList.add('done');
+        }
+        else {
+            box.parentElement.classList.remove('done');
+        }
+    };
     
-        checkboxes[i].addEventListener('change', function() {
-            strikethroughText(checkboxes[i]);
-        });
-    }
+    return {get, render, create};
 }
 
-
-
-const renderEdit = function(c = false, t = '', d = '') {
+const renderEdit = function(obj = {content: '', deadline: ''}) {
     const item = document.createElement('li');
     item.classList.add('list-edit');
 
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = c;
+    // const checkbox = document.createElement('input');
+    // checkbox.setAttribute('id', 'edit-checkbox');
+    // checkbox.type = 'checkbox';
+    // checkbox.checked = c;
     const text = document.createElement('input');
+    text.setAttribute('id', 'edit-text');
     text.type = 'text';
-    text.value = t;
+    text.value = obj.content;
     const date = document.createElement('input');
+    date.setAttribute('id', 'edit-date');
     date.type = 'date';
-    date.value = d;
-    const button = document.createElement('button');
-    button.innerHTML = '<i class="fas fa-save"></i>';
-    item.appendChild(checkbox);
+    date.value = obj.deadline;
+    const buttonSave = document.createElement('button');
+    buttonSave.setAttribute('id', 'edit-buttonSave');
+    buttonSave.innerHTML = '<i class="fas fa-save"></i>';
+    const buttonDelete = document.createElement('button');
+    buttonDelete.setAttribute('id', 'edit-buttonDelete');
+    buttonDelete.innerHTML = '<i class="fas fa-trash"></i>';
+
+    // item.appendChild(checkbox);
     item.appendChild(text);
     item.appendChild(date);
-    item.appendChild(button);
+    item.appendChild(buttonSave);
+    item.appendChild(buttonDelete);
 
 
-    button.addEventListener('click', function() {
-        const newData = {checked: checkbox.checked, content: text.value, deadline: date.value};
-        const newRender = listItem(newData).create()
-        listItems.appendChild(newRender);
-        listItems.appendChild(listAddButton);
+    buttonSave.addEventListener('click', function() {
+        const newData = {checked: false, content: text.value, deadline: date.value};
+        const newItem = listItem(currentHeader, newData);
+        newItem.create();
+
+        currentListItems.appendChild(newItem.render());
+        currentListItems.appendChild(listAddButton);
         isEditing = false;
-        listItems.removeChild(item)
+        currentListItems.removeChild(item)
     });
 
-    item.addEventListener('blur', function(event) {
-        console.log(document.activeElement);
+    buttonDelete.addEventListener('click', function() {
+        isEditing = false;
+        renderRemove(item);
     });
     
     return item;
 };
 
+const renderRemove = function (item) {
+    // const index = item.parentElement.indexOf.call(item.parentElement.children, item);
+    item.remove();
+    // return index;
+};
+
 listAddButton.addEventListener('click', function() {
     if (!isEditing) {
-        listItems.appendChild(renderEdit());
-        listItems.appendChild(listAddButton);
+        currentListItems.appendChild(renderEdit());
+        currentListItems.appendChild(listAddButton);
         isEditing = true;
     }
     else {
@@ -157,4 +257,4 @@ listAddButton.addEventListener('click', function() {
     }
 });
 
-export {listHeader, listItem, setupStrikethroughText};
+export {listHeader, listItem, listDescription};

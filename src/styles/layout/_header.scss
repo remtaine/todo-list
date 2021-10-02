@@ -5,7 +5,7 @@ header {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     // height: 3rem;
-    background-color: darken($color1, 5%);
+    background-color: darken($color1, 10%);
     flex-basis: 30%;
     grid-column: 1 / -1;
     @include flex-center();
@@ -15,5 +15,11 @@ header {
         margin: 0;
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
+    }
+}
+
+@media (max-width: $breakpoint1) {
+    header {
+        height: 70px;
     }
 }
